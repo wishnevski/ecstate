@@ -83,7 +83,7 @@ If you want to use the library in a browser without a bundler, you can copy `ecs
 
 ## Example
 
-```javascript
+```js
 
 import { ECState } from 'ecstate';
 
