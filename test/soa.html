@@ -1,0 +1,112 @@
+<script>
+
+
+	/* ----------- COMPONENTS ----------- */
+
+
+	function Position()
+	{
+		this.x = 0;
+		this.y = 0;
+		this.z = 0;
+	}
+
+
+	function Velocity()
+	{
+		this.x = 0;
+		this.y = 0;
+		this.z = 0;
+	}
+
+
+	function Mesh()
+	{
+		this.type = 0;
+	}
+
+
+	function Body()
+	{
+		this.mass = 0;
+		this.friction = 0;
+		this.density = 1;
+		this.collide = true;
+	}
+
+
+	/* ----------- ENTITIES ----------- */
+
+
+	var ids = [];
+
+	var Positions = [];
+	var Velocities = [];
+	var Meshes = [];
+	var Bodies = [];
+
+
+	for(let i = 0; i < 1500000; i++)
+	{
+		ids.push(i);
+
+		Positions.push(new Position);
+		Velocities.push(new Velocity);
+		Meshes.push(new Mesh);
+		Bodies.push(new Body);
+	}
+
+
+	/* ----------- UPDATE ----------- */
+
+
+	setInterval(() =>
+	{
+		var time = Date.now();
+
+
+		/* POSITION SYSTEM */
+
+
+		for(let i = 0; i < ids.length; i++)
+		{
+			let id = ids[i];
+			let position = Position[i];
+		}
+
+
+		/* VELOCITY SYSTEM */
+
+
+		for(let i = 0; i < ids.length; i++)
+		{
+			let id = ids[i];
+			let velocity = Velocities[i];
+		}
+
+
+		/* MESH SYSTEM */
+
+
+		for(let i = 0; i < ids.length; i++)
+		{
+			let id = ids[i];
+			let mesh = Meshes[i];
+		}
+
+
+		/* BODY SYSTEM */
+
+
+		for(let i = 0; i < ids.length; i++)
+		{
+			let id = ids[i];
+			let body = Bodies[i];
+		}
+
+
+		console.log(Date.now() - time);
+	}, 50);
+
+
+</script>
