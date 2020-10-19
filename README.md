@@ -1,11 +1,20 @@
+# Table of Contents
 
-[Library](#ecstate)  
-[Features](#features)  
-[Installing](#installing)  
-[Importing](#importing)  
-[Example](#example)  
-[Working principle and Precautions](#working-principle-and-precautions)  
-[Documentation](#documentation)  
+- [ECState](#ecstate)
+	- [Features](#features)
+	- [Installing](#installing)
+	- [Importing](#importing)
+	- [Example](#example)
+- [Working principle and Precautions](#working-principle-and-precautions)
+	- [Archetypes](#archetypes)
+	- [Adding entities](#adding-entities)
+	- [Removing entities](#removing-entities)
+	- [Modifying entities](#modifying-entities)
+- [Documentation](#documentation)
+	- [Init](#init)
+	- [Entity](#entity)
+	- [Components](#components)
+	- [Query](#query)
 
 
 <!-- ------------------------ ECSTATE ------------------------ -->
@@ -216,7 +225,7 @@ For example, an entity has 3 components `Transform`,` Body`, `Collider`, which m
 
 To quickly remove an entity at index 3, the library takes the components at index 10 (i.e. the last entity) and puts them in place 3 in all arrays. Each array is shortened.
 
-`**From this follows the main precaution of the ECS library working on archetypes:** during an iterative update of components in an archetype, deleting the current or early updated entity will cause the loop to skip the one that will be moved from the end to the place of the deleted one.`
+`From this follows the main precaution of the ECS library working on archetypes: during an iterative update of components in an archetype, deleting the current or early updated entity will cause the loop to skip the one that will be moved from the end to the place of the deleted one.`
 
 
 <!-- ----------- MODIFYING ENTITIES ----------- -->
