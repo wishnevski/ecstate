@@ -1,20 +1,25 @@
 # Table of Contents
 
 - [ECState](#ecstate)
-	- [Features](#features)
-	- [Installing](#installing)
-	- [Importing](#importing)
-	- [Example](#example)
+  - [Features](#features)
+  - [Installing](#installing)
+  - [Importing](#importing)
+  - [Example](#example)
 - [Working principle and Precautions](#working-principle-and-precautions)
-	- [Archetypes](#archetypes)
-	- [Adding entities](#adding-entities)
-	- [Removing entities](#removing-entities)
-	- [Modifying entities](#modifying-entities)
+  - [Archetypes](#archetypes)
+  - [Adding entities](#adding-entities)
+  - [Removing entities](#removing-entities)
+  - [Modifying entities](#modifying-entities)
+- [FAQ](#faq)
+  - [Why there are no `add` and `remove` hooks?](#why-there-are-no-add-and-remove-hooks?)
+  - [Why there are no systems?](#why-there-are-no-systems?)
+  - [Why `ES6` syntax is not used to declare components?](#why-ES6-syntax-is-not-used-to-declare-components?)
+  - [Can entities be modified during logic update iterations?](#can-entities-be-modified-during-logic-update-iterations?)
 - [Documentation](#documentation)
-	- [Init](#init)
-	- [Entity](#entity)
-	- [Components](#components)
-	- [Query](#query)
+  - [Init](#init)
+  - [Entity](#entity)
+  - [Components](#components)
+  - [Query](#query)
 
 
 <!-- ------------------------ ECSTATE ------------------------ -->
@@ -22,9 +27,9 @@
 
 # ECState
 
-**ECState** is the fastest lightweight [ECS](https://wikipedia.org/wiki/Entity_component_system) *(Entity Component System)* library with a minimalistic API, working on archetypes and written in JavaScript.
+**ECState** is the fastest lightweight [ECS](https://wikipedia.org/wiki/Entity_component_system) *(Entity Component System)* library with a minimalistic API, working on archetypes ([SOA](https://en.wikipedia.org/wiki/AoS_and_SoA)) and written in JavaScript.
 
-Based on JavaScript tests, the way of processing data in the form of *struct of arrays* ([SOA](https://en.wikipedia.org/wiki/AoS_and_SoA)) is up to 30% faster than an *array of structures* (AOS), although it is not a *cache-friendly* way of iterating, as in most native C-like languages.
+Based on JavaScript tests, the way of processing data in the form of *struct of arrays* SOA is up to 30% faster than an *array of structures* (AOS), although it is not a *cache-friendly* way of iterating, as in most native C-like languages.
 
 Also, this approach adds flexibility in handling the components of the created application.
 
@@ -38,6 +43,7 @@ Also, this approach adds flexibility in handling the components of the created a
 - Entity is just a numeric identifier.
 - Archetypes and queries are generated automatically in realtime.
 - Iterative queries and switching entities between archetypes are cached for better performance.
+- Hooks for adding and removing components are strictly absent, since they do not fit into the philosophy of a pure ECS approach.
 - The implementation of the systems remains at the discretion of the developer, since methods and patterns of organizing business logic for each project are different.
 
 
@@ -82,7 +88,7 @@ If you want to use the library in a browser without a bundler, you can copy `ecs
 ```html
 <script src="./ecstate.umd.js"></script>
 <script>
-	var { ECState } = ECState; // ECState is an object that contains the necessary functions constructors, including ECState constructor.
+  var { ECState } = ECState; // ECState is an object that contains the necessary functions constructors, including ECState constructor.
 </script>
 ```
 
@@ -102,22 +108,22 @@ import { ECState } from 'ecstate';
 
 function Transform()
 {
-	this.position = { x: 0, y: 0, z: 0 };
+  this.position = { x: 0, y: 0, z: 0 };
 }
 
 
 function Body()
 {
-	this.mass = 10;
-	this.static = false;
-	this.velocity = { x: 0, y: 0, z: 0 };
+  this.mass = 10;
+  this.static = false;
+  this.velocity = { x: 0, y: 0, z: 0 };
 }
 
 
 function Collider()
 {
-	this.radius = 50;
-	this.collide = false;
+  this.radius = 50;
+  this.collide = false;
 }
 
 
@@ -165,23 +171,23 @@ state.addEntity(Transform, Body, Collider); // return 0, not 3
 
 state.query([Transform, Body], function({ Transform: transforms, Body: bodies }, ids)
 {
-	// The callback is called on every non-empty archetype containing the "Transform" and "Body" component types.
-	// For example, if we have 10 entities with (Transform, Body) and 5 entities with (Transform, Body, Collider), then the callback is called 2 times for each archetype.
-	// Inside the callback, the user himself iterates over the necessary components using "for".
+  // The callback is called on every non-empty archetype containing the "Transform" and "Body" component types.
+  // For example, if we have 10 entities with (Transform, Body) and 5 entities with (Transform, Body, Collider), then the callback is called 2 times for each archetype.
+  // Inside the callback, the user himself iterates over the necessary components using "for".
 
-	for(let i = 0; i < ids.length; i++) // The length of the ids array is always equal to the lengths of the component arrays
-	{
-		let transform = transforms[i];
-		let body = bodies[i];
-		let id = ids[i];
+  for(let i = 0; i < ids.length; i++) // The length of the ids array is always equal to the lengths of the component arrays
+  {
+    let transform = transforms[i];
+    let body = bodies[i];
+    let id = ids[i];
 
-		if(body.mass > 0 && body.static === false)
-		{
-			transform.position.x += body.velocity.x / body.mass;
-			transform.position.y += body.velocity.y / body.mass;
-			transform.position.z += body.velocity.z / body.mass;
-		}
-	}
+    if(body.mass > 0 && body.static === false)
+    {
+      transform.position.x += body.velocity.x / body.mass;
+      transform.position.y += body.velocity.y / body.mass;
+      transform.position.z += body.velocity.z / body.mass;
+    }
+  }
 });
 ```
 
@@ -329,18 +335,18 @@ The callback passes two arguments: an object with arrays of archetype components
 ```javascript
 state.query([Transform, Body], function(components, ids)
 {
-	// The callback is called on every non-empty archetype containing the "Transform" and "Body" component types.
-	// For example, if we have 10 entities with (Transform, Body) and 5 entities with (Transform, Body, Collider), then the callback is called 2 times for each archetype.
-	// Inside the callback, the user himself iterates over the necessary components using "for".
+  // The callback is called on every non-empty archetype containing the "Transform" and "Body" component types.
+  // For example, if we have 10 entities with (Transform, Body) and 5 entities with (Transform, Body, Collider), then the callback is called 2 times for each archetype.
+  // Inside the callback, the user himself iterates over the necessary components using "for".
 
-	for(let i = 0; i < ids.length; i++)
-	{
-		let transform = components.Transform[i];
-		let body = components.Body[i];
-		let id = ids[i];
+  for(let i = 0; i < ids.length; i++)
+  {
+    let transform = components.Transform[i];
+    let body = components.Body[i];
+    let id = ids[i];
 
-		// do anything with "transform" or "body"
-	}
+    // do anything with "transform" or "body"
+  }
 });
 ```
 
@@ -351,13 +357,13 @@ Note, however, that in [ES6](https://www.w3schools.com/js/js_es6.asp) it is most
 
 state.query([Transform, Body], function({ Transform: transforms, Body: bodies }, ids)
 {
-	for(let i = 0; i < ids.length; i++)
-	{
-		let transform = transforms[i];
-		let body = bodies[i];
-		let id = ids[i];
+  for(let i = 0; i < ids.length; i++)
+  {
+    let transform = transforms[i];
+    let body = bodies[i];
+    let id = ids[i];
 
-		// do anything with "transform" or "body"
-	}
+    // do anything with "transform" or "body"
+  }
 });
 ```
