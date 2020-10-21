@@ -29,7 +29,7 @@
 
 **ECState** is the fastest lightweight [ECS](https://wikipedia.org/wiki/Entity_component_system) *(Entity Component System)* library with a minimalistic API, working on archetypes ([SOA](https://en.wikipedia.org/wiki/AoS_and_SoA)) and written in JavaScript.
 
-Based on JavaScript tests, the way of processing data in the form of *struct of arrays* SOA is up to 30% faster than an *array of structures* (AOS), although it is not a *cache-friendly* way of iterating, as in most native C-like languages.
+Based on JS tests, the way of processing data in the form of *struct of arrays* (SOA) is up to 30% faster than an *array of structures* (AOS), although it is not a *cache-friendly* way of iterating, as in most native C-like languages.
 
 Also, this approach adds flexibility in handling the components of the created application.
 
@@ -44,7 +44,7 @@ Also, this approach adds flexibility in handling the components of the created a
 - Archetypes and queries are generated automatically in realtime.
 - Iterative queries and switching entities between archetypes are cached for better performance.
 - Hooks for adding and removing components are strictly absent, since they do not fit into the philosophy of a pure ECS approach.
-- The implementation of the systems remains at the discretion of the developer, since methods and patterns of organizing business logic for each project are different.
+- The implementation of the systems remains at the discretion of the developer, since methods and patterns of organizing update logic for each project are different.
 
 
 <!-- ------------------------ INSTALLING ------------------------ -->
@@ -55,8 +55,10 @@ Also, this approach adds flexibility in handling the components of the created a
 You can install the library using the `npm` package manager:
 
 ```
-npm install ecstate -g
+npm install ecstate
 ```
+
+`Note that Node [ES6](https://nodejs.org/api/esm.html) modules does not support the *NODE_PATH* environment variable as per the [specification](https://nodejs.org/api/esm.html#esm_no_node_path). Therefore, modules that will be imported into Node via the "import" specifier must be installed in the local directory *node_modules* without the **-g** flag. Otherwise, you will receive the "MODULE_NOT_FOUND" error`.
 
 
 <!-- ------------------------ IMPORTING ------------------------ -->
@@ -73,22 +75,22 @@ import { ECState } from 'ecstate';
 the same as:
 
 ```javascript
-import { ECState } from 'ecstate/build/ecstate.module.js';
+import { ECState } from 'ecstate/build/ecstate.module.mjs';
 ```
 
 or you can use the [UMD](https://github.com/umdjs/umd/) module:
 
 ```javascript
-var { ECState } = require('ecstate/build/ecstate.umd.js');
+var { ECState } = require('ecstate/build/ecstate.umd.cjs');
 ```
 
-If you want to use the library in a browser without a bundler, you can copy `ecstate/build/ecstate.umd.js` to your project folder and include it directly in html:
+If you want to use the library in a browser without a bundler, you can copy `ecstate/build/ecstate.umd.cjs` to your project folder and include it directly in html:
 
 
 ```html
-<script src="./ecstate.umd.js"></script>
+<script src="./ecstate.umd.cjs"></script>
 <script>
-  var { ECState } = ECState; // ECState is an object that contains the necessary functions constructors, including ECState constructor.
+  var { ECState } = ECState; // ECState is an object that contains the necessary function constructors, including ECState constructor.
 </script>
 ```
 
@@ -240,6 +242,18 @@ To quickly remove an entity at index 3, the library takes the components at inde
 ## Modifying entities
 
 When you add or remove components from an entity via `addComponent()` and `removeComponent()`, it is almost the same as when creating a new entity. The library is looking for an archetype with a new (changed) list of components. If there is no such thing, he creates it. Then he transfers the components from the old archetype to the new one. If the operation of removing components is performed, then the extra ones are simply discarded. If the operation of adding components is performed, they are automatically created during the transfer. In the old archetype, components are simply removed in the manner described in `Removing entities`.
+
+
+<!-- ------------------------ FAQ ------------------------ -->
+
+
+# FAQ
+
+
+### Why there are no `add` and `remove` hooks?
+### Why there are no systems?
+### Why ES6 `class` syntax is not used to declare components?
+### Can entities be modified during logic update iterations?
 
 
 <!-- ------------------------ DOCUMENTATION ------------------------ -->
