@@ -1,7 +1,7 @@
 {
   "name": "ecstate",
   "description": "Fastest lightweight ECS (Entity Component System) framework working on archetypes (SOA) for JS applications and games.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "author": "Mike Wishnevski (mike.wishnevski@gmail.com)",
 
@@ -9,7 +9,7 @@
   "repository": "github:wishnevski/ecstate",
 
   "type": "module",
-  "main": "./build/ecstate.module.mjs",
+  "main": "./build/ecstate.module.cjs",
   "exports": {
     "import": "./build/ecstate.module.mjs",
     "require": "./build/ecstate.umd.cjs"

@@ -13,7 +13,7 @@
 - [FAQ](#faq)
   - [Why there are no `add` and `remove` hooks?](#why-there-are-no-add-and-remove-hooks)
   - [Why there are no systems?](#why-there-are-no-systems)
-  - [Why `ES6` syntax is not used to declare components?](#why-ES6-syntax-is-not-used-to-declare-components)
+  - [Why ES6 syntax is not used to declare components?](#why-ES6-syntax-is-not-used-to-declare-components)
   - [Can entities be modified during logic update iterations?](#can-entities-be-modified-during-logic-update-iterations)
 - [Documentation](#documentation)
   - [Init](#init)
@@ -58,7 +58,7 @@ You can install the library using the `npm` package manager:
 npm install ecstate
 ```
 
-> Note that Node [ES6](https://nodejs.org/api/esm.html) modules does not support the `NODE_PATH` environment variable as per the [specification](https://nodejs.org/api/esm.html#esm_no_node_path). Therefore, modules that will be imported into Node via the `import` specifier must be installed in the local directory `node_modules` without the `-g` flag. Otherwise, you will receive the `MODULE_NOT_FOUND` error.
+Note that Node [ES6](https://nodejs.org/api/esm.html) module loader does not support the `NODE_PATH` environment variable as per the [specification](https://nodejs.org/api/esm.html#esm_no_node_path). Therefore, modules that will be imported into Node via the `import` specifier must be installed in the local directory `node_modules` without the `-g` flag. Otherwise, you will receive the `MODULE_NOT_FOUND` error.
 
 
 <!-- ------------------------ IMPORTING ------------------------ -->
@@ -66,31 +66,35 @@ npm install ecstate
 
 ## Importing
 
+
+[UMD](https://github.com/umdjs/umd/) module import looks like this:
+
+```javascript
+var { ECState } = require('ecstate'); // ecstate/build/ecstate.umd.cjs
+```
+
 ES6 import looks like this:
 
 ```javascript
-import { ECState } from 'ecstate';
+import { ECState } from 'ecstate'; // ecstate/build/ecstate.module.mjs
 ```
 
-the same as:
+If you want to use the library in a browser without a bundler, you can copy `ecstate/build/ecstate.umd.cjs` or `ecstate/build/ecstate.module.mjs` to your project folder and include it directly in html.
 
-```javascript
-import { ECState } from 'ecstate/build/ecstate.module.mjs';
-```
-
-or you can use the [UMD](https://github.com/umdjs/umd/) module:
-
-```javascript
-var { ECState } = require('ecstate/build/ecstate.umd.cjs');
-```
-
-If you want to use the library in a browser without a bundler, you can copy `ecstate/build/ecstate.umd.cjs` to your project folder and include it directly in html:
-
+**UMD** in browser:
 
 ```html
 <script src="./ecstate.umd.cjs"></script>
 <script>
   var { ECState } = ECState; // ECState is an object that contains the necessary function constructors, including ECState constructor.
+</script>
+```
+
+**ES6** in browser:
+
+```html
+<script type="module">
+  import { ECState } from './ecstate.module.mjs';
 </script>
 ```
 
@@ -252,7 +256,7 @@ When you add or remove components from an entity via `addComponent()` and `remov
 
 #### Why there are no `add` and `remove` hooks?
 #### Why there are no systems?
-#### Why ES6 `class` syntax is not used to declare components?
+#### Why ES6 syntax is not used to declare components?
 #### Can entities be modified during logic update iterations?
 
 
