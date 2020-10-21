@@ -254,19 +254,19 @@ When you add or remove components from an entity via `addComponent()` and `remov
 # FAQ
 
 
-#### Why there are no `add` and `remove` hooks?
+### Why there are no `add` and `remove` hooks?
 
 Hooks in **ECS** are a dirty way to transfer information between systems that modify entities or react to these modifications. In compiled programming languages, this is also not a very productive feature within the *Data Oriented* approach.
 
 Therefore, the philosophy of `ECState` is based on the fact that any information (including state changes) and any data should be transmitted only through components.
 
 
-#### Why there are no systems?
+### Why there are no systems?
 
 `ECState` is a library, not a framework, so it does not impose any patterns for organizing logic handlers. Their implementation remains on the shoulders of the developer of a specific project. Functionality of `ECState` remains in one area of responsibility - convenient storage and fast modification of the state (world) of the application.
 
 
-#### Why ES6 syntax is not used to declare components?
+### Why ES6 syntax is not used to declare components?
 
 First, from a syntactic point of view, declaring a component as a constructor function is much more compact than as a class.
 
@@ -277,7 +277,7 @@ Third, in ECS architecture, a component is usually a [POD](https://wikipedia.org
 Using constructors as arguments to library API functions adds rigor to the code by not allowing random instances to be passed inside state.
 
 
-#### Can entities be modified during logic update iterations?
+### Can entities be modified during logic update iterations?
 
 
 <!-- ------------------------ DOCUMENTATION ------------------------ -->
