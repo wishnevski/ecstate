@@ -11,7 +11,7 @@
   - [Removing entities](#removing-entities)
   - [Modifying entities](#modifying-entities)
 - [FAQ](#faq)
-  - [Why there are no `add` and `remove` hooks?](#why-there-are-no-add-and-remove-hooks)
+  - [Why there are no add and remove hooks?](#why-there-are-no-add-and-remove-hooks)
   - [Why there are no systems?](#why-there-are-no-systems)
   - [Why ES6 syntax is not used to declare components?](#why-ES6-syntax-is-not-used-to-declare-components)
   - [Can entities be modified during logic update iterations?](#can-entities-be-modified-during-logic-update-iterations)
@@ -245,7 +245,11 @@ To quickly remove an entity at index 3, the library takes the components at inde
 
 ## Modifying entities
 
-When you add or remove components from an entity via `addComponent()` and `removeComponent()`, it is almost the same as when creating a new entity. The library is looking for an archetype with a new (changed) list of components. If there is no such thing, he creates it. Then he transfers the components from the old archetype to the new one. If the operation of removing components is performed, then the extra ones are simply discarded. If the operation of adding components is performed, they are automatically created during the transfer. In the old archetype, components are simply removed in the manner described in `Removing entities`.
+When you add or remove components from an entity via `addComponent()` and `removeComponent()`, it is almost the same as when creating a new entity.
+
+The library is looking for an archetype with a new (changed) list of components. If there is no such thing, he creates it. Then he transfers the components from the old archetype to the new one. If the operation of removing components is performed, then the extra ones are simply discarded. If the operation of adding components is performed, they are automatically created during the transfer.
+
+In the old archetype, components are simply removed in the manner described in `Removing entities`.
 
 
 <!-- ------------------------ FAQ ------------------------ -->
@@ -254,7 +258,7 @@ When you add or remove components from an entity via `addComponent()` and `remov
 # FAQ
 
 
-### Why there are no `add` and `remove` hooks?
+### Why there are no add and remove hooks?
 
 Hooks in **ECS** are a dirty way to transfer information between systems that modify entities or react to these modifications. In compiled programming languages, this is also not a very productive feature within the *Data Oriented* approach.
 
@@ -268,11 +272,11 @@ Therefore, the philosophy of `ECState` is based on the fact that any information
 
 ### Why ES6 syntax is not used to declare components?
 
-First, from a syntactic point of view, declaring a component as a constructor function is much more compact than as a class.
+**First**, from a syntactic point of view, declaring a component as a constructor function is much more compact than as a class.
 
-Secondly, classes in JS are not independent abstractions, but just syntactic sugar.
+**Secondly**, classes in JS are not independent abstractions, but just syntactic sugar.
 
-Third, in ECS architecture, a component is usually a [POD](https://wikipedia.org/wiki/Passive_data_structure) type that does not have control code. Therefore, in JavaScript, a simple constructor function is best suited for this data type.
+**Third**, in ECS architecture, a component is usually a [POD](https://wikipedia.org/wiki/Passive_data_structure) type that does not have control code. Therefore, in JavaScript, a simple constructor function is best suited for this data type.
 
 Using constructors as arguments to library API functions adds rigor to the code by not allowing random instances to be passed inside state.
 
