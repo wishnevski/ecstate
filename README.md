@@ -11,10 +11,10 @@
   - [Removing entities](#removing-entities)
   - [Modifying entities](#modifying-entities)
 - [FAQ](#faq)
-  - [Why there are no `add` and `remove` hooks?](#why-there-are-no-add-and-remove-hooks?)
-  - [Why there are no systems?](#why-there-are-no-systems?)
-  - [Why `ES6` syntax is not used to declare components?](#why-ES6-syntax-is-not-used-to-declare-components?)
-  - [Can entities be modified during logic update iterations?](#can-entities-be-modified-during-logic-update-iterations?)
+  - [Why there are no `add` and `remove` hooks?](#why-there-are-no-add-and-remove-hooks)
+  - [Why there are no systems?](#why-there-are-no-systems)
+  - [Why `ES6` syntax is not used to declare components?](#why-ES6-syntax-is-not-used-to-declare-components)
+  - [Can entities be modified during logic update iterations?](#can-entities-be-modified-during-logic-update-iterations)
 - [Documentation](#documentation)
   - [Init](#init)
   - [Entity](#entity)
@@ -58,7 +58,7 @@ You can install the library using the `npm` package manager:
 npm install ecstate
 ```
 
-`Note that Node [ES6](https://nodejs.org/api/esm.html) modules does not support the *NODE_PATH* environment variable as per the [specification](https://nodejs.org/api/esm.html#esm_no_node_path). Therefore, modules that will be imported into Node via the "import" specifier must be installed in the local directory *node_modules* without the **-g** flag. Otherwise, you will receive the "MODULE_NOT_FOUND" error`.
+> Note that Node [ES6](https://nodejs.org/api/esm.html) modules does not support the `NODE_PATH` environment variable as per the [specification](https://nodejs.org/api/esm.html#esm_no_node_path). Therefore, modules that will be imported into Node via the `import` specifier must be installed in the local directory `node_modules` without the `-g` flag. Otherwise, you will receive the `MODULE_NOT_FOUND` error.
 
 
 <!-- ------------------------ IMPORTING ------------------------ -->
@@ -250,10 +250,10 @@ When you add or remove components from an entity via `addComponent()` and `remov
 # FAQ
 
 
-### Why there are no `add` and `remove` hooks?
-### Why there are no systems?
-### Why ES6 `class` syntax is not used to declare components?
-### Can entities be modified during logic update iterations?
+#### Why there are no `add` and `remove` hooks?
+#### Why there are no systems?
+#### Why ES6 `class` syntax is not used to declare components?
+#### Can entities be modified during logic update iterations?
 
 
 <!-- ------------------------ DOCUMENTATION ------------------------ -->
