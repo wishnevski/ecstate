@@ -296,7 +296,7 @@ In order not to miss the update of an entity moved from the end, there are two s
 
 
 ```javascript
-state.query([Transform, Body], function({ Transform: transforms, Body: bodies }, ids)
+state.query([Transform, Body], function(components, ids)
 {
   for(let i = 0; i < ids.length; i++)
   {
@@ -322,7 +322,7 @@ state.query([Transform, Body], function({ Transform: transforms, Body: bodies },
 var modify = [];
 
 
-state.query([Transform, Body], function({ Transform: transforms, Body: bodies }, ids)
+state.query([Transform, Body], function(components, ids)
 {
   for(let i = 0; i < ids.length; i++)
   {

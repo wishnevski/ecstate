@@ -1,7 +1,7 @@
 {
   "name": "ecstate",
-  "description": "Fastest lightweight ECS (Entity Component System) framework working on archetypes (SOA) for JS applications and games.",
-  "version": "1.0.3",
+  "description": "Fastest lightweight ECS (Entity Component System) library with a minimalistic API, working on archetypes (SOA) and written in JavaScript.",
+  "version": "1.0.5",
   "license": "MIT",
   "author": "Mike Wishnevski (mike.wishnevski@gmail.com)",
 
