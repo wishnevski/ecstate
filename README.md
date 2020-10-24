@@ -285,9 +285,9 @@ Using constructors as arguments to library API functions adds rigor to the code 
 
 During an iterative update of components in an archetype, modifying the current or early updated entity will cause the loop to skip the one that will be moved from the end to the place of the modified one. This is described in detail in the section [Working principle and Precautions](#working-principle-and-precautions).
 
-Чтобы не происходило пропуска, есть два решения под каждый случай:
-- если модифицируется сущность, обновляемая в данный момент, то используется *decreasing the index of a `for` loop*.
-- если модифицируется произваольная сущность в текущем архетипе, то используется *separate modification cycle*.
+In order not to miss the update of an entity moved from the end, there are two solutions for two cases:
+- if being modified the entity that updating at the moment, then used the solution of *decreased the index of a `for` cycle*
+- if being modified an arbitrary entity in the current archetype, then used the solution of *separate modification cycle*
 
 
 **Decreasing the index of a `for` loop**:
@@ -300,8 +300,11 @@ state.query([Transform, Body], function({ Transform: transforms, Body: bodies },
   {
     // ...any update logic
 
-    if(body.haveIntersects === true)
+    if(body.haveIntersect === true)
     {
+      // The updatable entity is removed from the iterable archetype and moved to another. The last entity of the current archetype is moved to the place of removed one.
+      // In order not to miss the update of the entity moved from the end, "i" is decremented.
+
       state.addComponent(ids[i], Collided);
       i--;
     }
@@ -323,13 +326,17 @@ state.query([Transform, Body], function({ Transform: transforms, Body: bodies },
   {
     // ...any logic
 
-    if(body.intersects) modify.push(ids[i]);
+    // An arbitrary entity from the current archetype is marked in a separate list, but is not changed in the current cycle so as not to violate the update order.
+
+    if(body.haveIntersect === true) modify.push(body.intersectID);
   }
 });
 
 
 for(let i = 0; i < modify.length; i++)
 {
+  // The entity is removed from the iterable archetype and moved to another. The last entity of the current archetype is moved to the place of removed one.
+
   state.addComponent(modify[i], Collided);
 }
 ```
