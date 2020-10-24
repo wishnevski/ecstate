@@ -17,7 +17,7 @@ import is from './libraries/is.js';
 
 export function Archetype()
 {
-	this.types = {};	
+	this.types = {};
 
 	this.ids = [];
 	this.components = {};

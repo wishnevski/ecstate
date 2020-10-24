@@ -104,7 +104,7 @@ If you want to use the library in a browser without a bundler, you can copy `ecs
 
 ## Example
 
-```js
+```javascript
 
 import { ECState } from 'ecstate';
 
@@ -231,13 +231,11 @@ It should be noted that the entity can be empty, i.e. do not have any components
 
 ## Removing entities
 
-When you remove an entity with `removeEntity()`, the library gets an archetype, which contains the components of the entity specified by `id` and its index in the archetype arrays. Further, in place (index) of this entity in all arrays, the components of the last entity are installed, and also each array is shortened. Then `id` is freed for later reuse.
+When you remove an entity with `removeEntity()`, the library gets an archetype, which contains the components of the entity specified by `id`, and its index in the archetype arrays. Then, components of the last entity in archetype are put in place of the components of the entity to be removed. After that, all arrays of the archetype are automatically shortened by `Array.pop()`.
 
-For example, an entity has 3 components `Transform`,` Body`, `Collider`, which means it is in an archetype with 4 arrays - `Transform`, `Body`, `Collider` and `ids`. Let's say there are 10 entities inside the archetype - this means that the length of each array is 10. However, the entity we are deleting has index 3 in each array. (entity components have the same position in arrays)
+For example, an entity has 3 components `Transform`,` Body`, `Collider`, which means it is in an archetype with 4 arrays - `Transform`, `Body`, `Collider` and `ids`. Let's say there are 10 entities inside the archetype - this means that the length of each array is 10. However, the entity we are removing has index 3 in each array. (entity components have the same position in arrays)
 
-To quickly remove an entity at index 3, the library takes the components at index 10 (i.e. the last entity) and puts them in place 3 in all arrays. Each array is shortened.
-
-`From this follows the main precaution of the ECS library working on archetypes: during an iterative update of components in an archetype, deleting the current or early updated entity will cause the loop to skip the one that will be moved from the end to the place of the deleted one.`
+To quickly remove an entity at index 3, the library takes the components at index 10 (i.e. the last entity) and puts them in place 3 in all arrays. Then, each array is shortened.
 
 
 <!-- ----------- MODIFYING ENTITIES ----------- -->
@@ -245,11 +243,9 @@ To quickly remove an entity at index 3, the library takes the components at inde
 
 ## Modifying entities
 
-When you add or remove components from an entity via `addComponent()` and `removeComponent()`, it is almost the same as when creating a new entity.
+When you add or remove components from an entity via `addComponent()` and `removeComponent()`, the library is looking for an archetype with a new (changed) list of entity components. If there is no such thing, it creates it. Then it transfers the components from the old archetype to the new one. If the operation of removing components is performed, then the extra ones are simply discarded. If the operation of adding components is performed, they are automatically created during the transfer.
 
-The library is looking for an archetype with a new (changed) list of components. If there is no such thing, he creates it. Then he transfers the components from the old archetype to the new one. If the operation of removing components is performed, then the extra ones are simply discarded. If the operation of adding components is performed, they are automatically created during the transfer.
-
-In the old archetype, components are simply removed in the manner described in `Removing entities`.
+In the old archetype, components are simply removed.
 
 
 <!-- ------------------------ FAQ ------------------------ -->
@@ -287,11 +283,56 @@ Using constructors as arguments to library API functions adds rigor to the code 
 ### Can entities be modified during logic update iterations?
 
 
-Прежде чем читать этот пункт, ознакомьтесь с разделом `Working principle and Precautions`.
+During an iterative update of components in an archetype, modifying the current or early updated entity will cause the loop to skip the one that will be moved from the end to the place of the modified one. This is described in detail in the section [Working principle and Precautions](#working-principle-and-precautions).
 
-During an iterative update of components in an archetype, deleting the current or early updated entity will cause the loop to skip the one that will be moved from the end to the place of the deleted one.
+Чтобы не происходило пропуска, есть два решения под каждый случай:
+- если модифицируется сущность, обновляемая в данный момент, то используется *decreasing the index of a `for` loop*.
+- если модифицируется произваольная сущность в текущем архетипе, то используется *separate modification cycle*.
 
 
+**Decreasing the index of a `for` loop**:
+
+
+```javascript
+state.query([Transform, Body], function({ Transform: transforms, Body: bodies }, ids)
+{
+  for(let i = 0; i < ids.length; i++)
+  {
+    // ...any update logic
+
+    if(body.haveIntersects === true)
+    {
+      state.addComponent(ids[i], Collided);
+      i--;
+    }
+  }
+});
+```
+
+
+**Separate modification cycle**:
+
+
+```javascript
+var modify = [];
+
+
+state.query([Transform, Body], function({ Transform: transforms, Body: bodies }, ids)
+{
+  for(let i = 0; i < ids.length; i++)
+  {
+    // ...any logic
+
+    if(body.intersects) modify.push(ids[i]);
+  }
+});
+
+
+for(let i = 0; i < modify.length; i++)
+{
+  state.addComponent(modify[i], Collided);
+}
+```
 
 
 <!-- ------------------------ DOCUMENTATION ------------------------ -->

@@ -44,6 +44,6 @@ export default {
 
 	object: function(variable)
 	{
-		if(typeof variable == 'object' && variable !== null) return true; else return false;
+		if(typeof variable == 'object' && !Array.isArray(variable) && variable !== null) return true; else return false;
 	}
 };

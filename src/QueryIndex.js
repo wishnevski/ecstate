@@ -221,12 +221,17 @@ export function QueryIndex()
 	}
 
 
-	/* ----------------------------------------------------------------------------------------------------------- */
-	/* ----------------------------------------------------------------------------------------------------------- */
+	/* ------------------------------------------------------ */
 
 
 	this.get = function()
 	{
+		/* PATH */
+
+
+		var path = {};
+
+
 		/* EDGE [ROOT] */
 
 
@@ -238,12 +243,14 @@ export function QueryIndex()
 
 		for(let i = 0; i < arguments.length; i++)
 		{
-			if(!is.function(arguments[i]) || arguments[i].name.length === 0) throw '[Index] Invalid arguments in "get()" function';
+			if(!is.function(arguments[i]) || arguments[i].name.length === 0 || path[arguments[i].name] !== undefined) throw '[Index] Invalid arguments in "get()" function';
 
 			let name = arguments[i].name;
 
 			if(edge.edges[name] === undefined) edge.edges[name] = new Edge;
 			edge = edge.edges[name];
+
+			path[name] = true;
 		}
 
 
@@ -258,7 +265,7 @@ export function QueryIndex()
 				{
 					edge.query = queries[i];
 					break;
-				}
+				} 
 			}
 		}
 
