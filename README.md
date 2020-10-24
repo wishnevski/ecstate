@@ -243,7 +243,9 @@ To quickly remove an entity at index 3, the library takes the components at inde
 
 ## Modifying entities
 
-When you add or remove components from an entity via `addComponent()` and `removeComponent()`, the library is looking for an archetype with a new (changed) list of entity components. If there is no such thing, it creates it. Then it transfers the components from the old archetype to the new one. If the operation of removing components is performed, then the extra ones are simply discarded. If the operation of adding components is performed, they are automatically created during the transfer.
+When you add or remove components from an entity via `addComponent()` and `removeComponent()`, the library is looking for an archetype with a new (changed) list of entity components. If there is no such thing, it creates it.
+
+Then it transfers the components from the old archetype to the new one. If the operation of removing components is performed, then the extra ones are simply discarded. If the operation of adding components is performed, they are automatically created during the transfer.
 
 In the old archetype, components are simply removed.
 
