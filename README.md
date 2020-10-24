@@ -288,8 +288,8 @@ Using constructors as arguments to library API functions adds rigor to the code 
 During an iterative update of components in an archetype, modifying the current or early updated entity will cause the loop to skip the one that will be moved from the end to the place of the modified one. This is described in detail in the section [Working principle and Precautions](#working-principle-and-precautions).
 
 In order not to miss the update of an entity moved from the end, there are two solutions for two cases:
-- if being modified the entity that updating at the moment, then used the solution of *decreased the index of a `for` cycle*
-- if being modified an arbitrary entity in the current archetype, then used the solution of *separate modification cycle*
+- if being modified the entity that updating at the moment, then used the solution of *decreased the index of a `for` loop*
+- if being modified an arbitrary entity in the current archetype, then used the solution of *separate modification loop*
 
 
 **Decreasing the index of a `for` loop**:
@@ -315,7 +315,7 @@ state.query([Transform, Body], function({ Transform: transforms, Body: bodies },
 ```
 
 
-**Separate modification cycle**:
+**Separate modification loop**:
 
 
 ```javascript
@@ -326,9 +326,9 @@ state.query([Transform, Body], function({ Transform: transforms, Body: bodies },
 {
   for(let i = 0; i < ids.length; i++)
   {
-    // ...any logic
+    // ...any update logic
 
-    // An arbitrary entity from the current archetype is marked in a separate list, but is not changed in the current cycle so as not to violate the update order.
+    // An arbitrary entity from the current archetype is marked in a separate list, but is not changed in the current loop so as not to violate the update order.
 
     if(body.haveIntersect === true) modify.push(body.intersectID);
   }
